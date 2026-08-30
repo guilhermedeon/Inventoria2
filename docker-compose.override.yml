@@ -1,0 +1,12 @@
+services:
+  web-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=10080
+      - ASPNETCORE_HTTPS_PORTS=10081
+    ports:
+      - "10080"
+      - "10081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
