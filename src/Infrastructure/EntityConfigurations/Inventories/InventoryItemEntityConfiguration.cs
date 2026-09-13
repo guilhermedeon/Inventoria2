@@ -9,6 +9,7 @@ public class InventoryItemEntityConfiguration
 {
     public void Configure(EntityTypeBuilder<InventoryItem> builder)
     {
+        builder.ToTable("InventoryItems");
         builder
             .HasKey(x => x.Id);
 

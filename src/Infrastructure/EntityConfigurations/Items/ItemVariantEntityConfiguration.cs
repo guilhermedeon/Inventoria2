@@ -9,6 +9,7 @@ public class ItemVariantEntityConfiguration
 {
     public void Configure(EntityTypeBuilder<ItemVariant> builder)
     {
+        builder.ToTable("ItemVariants");
         builder
             .HasKey(x => x.Id);
 
