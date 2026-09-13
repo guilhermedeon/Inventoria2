@@ -9,6 +9,7 @@ public class PackDefinitionEntityConfiguration
 {
     public void Configure(EntityTypeBuilder<PackDefinition> builder)
     {
+        builder.ToTable("PackDefinitions");
         builder
             .HasKey(x => x.Id);
 

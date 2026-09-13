@@ -9,6 +9,7 @@ public class ItemDefinitionEntityConfiguration
 {
     public void Configure(EntityTypeBuilder<ItemDefinition> builder)
     {
+        builder.ToTable("ItemDefinitions");
         builder
             .HasKey(x => x.Id);
 

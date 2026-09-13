@@ -9,6 +9,7 @@ public class PackDefinitionItemEntityConfiguration
 {
     public void Configure(EntityTypeBuilder<PackDefinitionItem> builder)
     {
+        builder.ToTable("PackDefinitionItems");
         builder
             .HasKey(x => new
             {

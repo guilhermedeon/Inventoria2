@@ -18,4 +18,8 @@
 	<InternalsVisibleTo Include="ArchitectureTests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

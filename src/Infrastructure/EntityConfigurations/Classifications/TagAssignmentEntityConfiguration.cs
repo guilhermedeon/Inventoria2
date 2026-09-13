@@ -12,6 +12,7 @@ public class TagAssignmentEntityConfiguration
 {
     public void Configure(EntityTypeBuilder<TagAssignment> builder)
     {
+        builder.ToTable("TagAssignments");
         builder
             .HasKey(x => new
             {
