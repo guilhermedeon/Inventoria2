@@ -73,7 +73,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_categories_slug");
 
-                    b.ToTable("categories", "public");
+                    b.ToTable("Categories", "public");
                 });
 
             modelBuilder.Entity("Domain.Classifications.Tag", b =>
@@ -153,7 +153,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_tags_slug");
 
-                    b.ToTable("tags", "public");
+                    b.ToTable("Tags", "public");
                 });
 
             modelBuilder.Entity("Domain.Classifications.TagAssignment", b =>
@@ -171,9 +171,9 @@ namespace Infrastructure.Migrations
                         .HasColumnName("entity_type");
 
                     b.HasKey("TagId", "EntityId", "EntityType")
-                        .HasName("pk_tag_assignment");
+                        .HasName("pk_tag_assignments");
 
-                    b.ToTable("tag_assignment", "public");
+                    b.ToTable("TagAssignments", "public");
                 });
 
             modelBuilder.Entity("Domain.Inventories.Inventory", b =>
@@ -219,15 +219,15 @@ namespace Infrastructure.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
-                        .HasName("pk_inventory");
+                        .HasName("pk_inventories");
 
                     b.HasIndex("CategoryId")
-                        .HasDatabaseName("ix_inventory_category_id");
+                        .HasDatabaseName("ix_inventories_category_id");
 
                     b.HasIndex("ParentInventoryId")
-                        .HasDatabaseName("ix_inventory_parent_inventory_id");
+                        .HasDatabaseName("ix_inventories_parent_inventory_id");
 
-                    b.ToTable("inventory", "public");
+                    b.ToTable("Inventories", "public");
                 });
 
             modelBuilder.Entity("Domain.Inventories.InventoryItem", b =>
@@ -304,7 +304,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("PackDefinitionId")
                         .HasDatabaseName("ix_inventory_items_pack_definition_id");
 
-                    b.ToTable("inventory_items", "public");
+                    b.ToTable("InventoryItems", "public");
                 });
 
             modelBuilder.Entity("Domain.Items.ItemDefinition", b =>
@@ -375,7 +375,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_item_definitions_sku");
 
-                    b.ToTable("item_definitions", "public");
+                    b.ToTable("ItemDefinitions", "public");
                 });
 
             modelBuilder.Entity("Domain.Items.ItemVariant", b =>
@@ -446,7 +446,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_item_variants_sku");
 
-                    b.ToTable("item_variants", "public");
+                    b.ToTable("ItemVariants", "public");
                 });
 
             modelBuilder.Entity("Domain.Items.PackDefinition", b =>
@@ -510,7 +510,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_pack_definitions_sku");
 
-                    b.ToTable("pack_definitions", "public");
+                    b.ToTable("PackDefinitions", "public");
                 });
 
             modelBuilder.Entity("Domain.Items.PackDefinitionItem", b =>
@@ -534,7 +534,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ItemVariantId")
                         .HasDatabaseName("ix_pack_definition_items_item_variant_id");
 
-                    b.ToTable("pack_definition_items", "public");
+                    b.ToTable("PackDefinitionItems", "public");
                 });
 
             modelBuilder.Entity("Domain.Todos.TodoItem", b =>
@@ -732,7 +732,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_tag_assignment_tags_tag_id");
+                        .HasConstraintName("fk_tag_assignments_tags_tag_id");
 
                     b.Navigation("Tag");
                 });
@@ -743,13 +743,13 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("fk_inventory_categories_category_id");
+                        .HasConstraintName("fk_inventories_categories_category_id");
 
                     b.HasOne("Domain.Inventories.Inventory", "ParentInventory")
                         .WithMany("ChildInventories")
                         .HasForeignKey("ParentInventoryId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("fk_inventory_inventory_parent_inventory_id");
+                        .HasConstraintName("fk_inventories_inventories_parent_inventory_id");
 
                     b.Navigation("Category");
 
@@ -769,7 +769,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_inventory_items_inventory_inventory_id");
+                        .HasConstraintName("fk_inventory_items_inventories_inventory_id");
 
                     b.HasOne("Domain.Items.ItemVariant", "ItemVariant")
                         .WithMany("InventoryItems")

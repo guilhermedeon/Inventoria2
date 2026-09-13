@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class Inventoria_Start : Migration
+public partial class Initial : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ public partial class Inventoria_Start : Migration
             name: "public");
 
         migrationBuilder.CreateTable(
-            name: "category",
+            name: "Categories",
             schema: "public",
             columns: table => new
             {
@@ -31,12 +31,12 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_category", x => x.id);
+                table.PrimaryKey("pk_categories", x => x.id);
                 table.ForeignKey(
-                    name: "fk_category_category_parent_id",
+                    name: "fk_categories_categories_parent_id",
                     column: x => x.parent_id,
                     principalSchema: "public",
-                    principalTable: "category",
+                    principalTable: "Categories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
             });
@@ -62,7 +62,7 @@ public partial class Inventoria_Start : Migration
             });
 
         migrationBuilder.CreateTable(
-            name: "inventory",
+            name: "Inventories",
             schema: "public",
             columns: table => new
             {
@@ -78,25 +78,25 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_inventory", x => x.id);
+                table.PrimaryKey("pk_inventories", x => x.id);
                 table.ForeignKey(
-                    name: "fk_inventory_category_category_id",
+                    name: "fk_inventories_categories_category_id",
                     column: x => x.category_id,
                     principalSchema: "public",
-                    principalTable: "category",
+                    principalTable: "Categories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    name: "fk_inventory_inventory_parent_inventory_id",
+                    name: "fk_inventories_inventories_parent_inventory_id",
                     column: x => x.parent_inventory_id,
                     principalSchema: "public",
-                    principalTable: "inventory",
+                    principalTable: "Inventories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            name: "item_definition",
+            name: "ItemDefinitions",
             schema: "public",
             columns: table => new
             {
@@ -115,18 +115,18 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_item_definition", x => x.id);
+                table.PrimaryKey("pk_item_definitions", x => x.id);
                 table.ForeignKey(
-                    name: "fk_item_definition_category_category_id",
+                    name: "fk_item_definitions_categories_category_id",
                     column: x => x.category_id,
                     principalSchema: "public",
-                    principalTable: "category",
+                    principalTable: "Categories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            name: "pack_definition",
+            name: "PackDefinitions",
             schema: "public",
             columns: table => new
             {
@@ -143,12 +143,12 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_pack_definition", x => x.id);
+                table.PrimaryKey("pk_pack_definitions", x => x.id);
                 table.ForeignKey(
-                    name: "fk_pack_definition_category_category_id",
+                    name: "fk_pack_definitions_categories_category_id",
                     column: x => x.category_id,
                     principalSchema: "public",
-                    principalTable: "category",
+                    principalTable: "Categories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
             });
@@ -206,7 +206,7 @@ public partial class Inventoria_Start : Migration
             });
 
         migrationBuilder.CreateTable(
-            name: "item_variant",
+            name: "ItemVariants",
             schema: "public",
             columns: table => new
             {
@@ -224,25 +224,25 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_item_variant", x => x.id);
+                table.PrimaryKey("pk_item_variants", x => x.id);
                 table.ForeignKey(
-                    name: "fk_item_variant_category_category_id",
+                    name: "fk_item_variants_categories_category_id",
                     column: x => x.category_id,
                     principalSchema: "public",
-                    principalTable: "category",
+                    principalTable: "Categories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    name: "fk_item_variant_item_definition_item_definition_id",
+                    name: "fk_item_variants_item_definitions_item_definition_id",
                     column: x => x.item_definition_id,
                     principalSchema: "public",
-                    principalTable: "item_definition",
+                    principalTable: "ItemDefinitions",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            name: "inventory_item",
+            name: "InventoryItems",
             schema: "public",
             columns: table => new
             {
@@ -262,39 +262,39 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_inventory_item", x => x.id);
+                table.PrimaryKey("pk_inventory_items", x => x.id);
                 table.ForeignKey(
-                    name: "fk_inventory_item_category_category_id",
+                    name: "fk_inventory_items_categories_category_id",
                     column: x => x.category_id,
                     principalSchema: "public",
-                    principalTable: "category",
+                    principalTable: "Categories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    name: "fk_inventory_item_inventory_inventory_id",
+                    name: "fk_inventory_items_inventories_inventory_id",
                     column: x => x.inventory_id,
                     principalSchema: "public",
-                    principalTable: "inventory",
+                    principalTable: "Inventories",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    name: "fk_inventory_item_item_variant_item_variant_id",
+                    name: "fk_inventory_items_item_variants_item_variant_id",
                     column: x => x.item_variant_id,
                     principalSchema: "public",
-                    principalTable: "item_variant",
+                    principalTable: "ItemVariants",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    name: "fk_inventory_item_pack_definition_pack_definition_id",
+                    name: "fk_inventory_items_pack_definitions_pack_definition_id",
                     column: x => x.pack_definition_id,
                     principalSchema: "public",
-                    principalTable: "pack_definition",
+                    principalTable: "PackDefinitions",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            name: "pack_definition_item",
+            name: "PackDefinitionItems",
             schema: "public",
             columns: table => new
             {
@@ -304,25 +304,25 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_pack_definition_item", x => new { x.pack_definition_id, x.item_variant_id });
+                table.PrimaryKey("pk_pack_definition_items", x => new { x.pack_definition_id, x.item_variant_id });
                 table.ForeignKey(
-                    name: "fk_pack_definition_item_item_variant_item_variant_id",
+                    name: "fk_pack_definition_items_item_variants_item_variant_id",
                     column: x => x.item_variant_id,
                     principalSchema: "public",
-                    principalTable: "item_variant",
+                    principalTable: "ItemVariants",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    name: "fk_pack_definition_item_pack_definition_pack_definition_id",
+                    name: "fk_pack_definition_items_pack_definitions_pack_definition_id",
                     column: x => x.pack_definition_id,
                     principalSchema: "public",
-                    principalTable: "pack_definition",
+                    principalTable: "PackDefinitions",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            name: "tag",
+            name: "Tags",
             schema: "public",
             columns: table => new
             {
@@ -341,41 +341,41 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_tag", x => x.id);
+                table.PrimaryKey("pk_tags", x => x.id);
                 table.ForeignKey(
-                    name: "fk_tag_inventory_inventory_id",
+                    name: "fk_tags_inventory_inventory_id",
                     column: x => x.inventory_id,
                     principalSchema: "public",
-                    principalTable: "inventory",
+                    principalTable: "Inventories",
                     principalColumn: "id");
                 table.ForeignKey(
-                    name: "fk_tag_inventory_item_inventory_item_id",
+                    name: "fk_tags_inventory_items_inventory_item_id",
                     column: x => x.inventory_item_id,
                     principalSchema: "public",
-                    principalTable: "inventory_item",
+                    principalTable: "InventoryItems",
                     principalColumn: "id");
                 table.ForeignKey(
-                    name: "fk_tag_item_definition_item_definition_id",
+                    name: "fk_tags_item_definitions_item_definition_id",
                     column: x => x.item_definition_id,
                     principalSchema: "public",
-                    principalTable: "item_definition",
+                    principalTable: "ItemDefinitions",
                     principalColumn: "id");
                 table.ForeignKey(
-                    name: "fk_tag_item_variant_item_variant_id",
+                    name: "fk_tags_item_variants_item_variant_id",
                     column: x => x.item_variant_id,
                     principalSchema: "public",
-                    principalTable: "item_variant",
+                    principalTable: "ItemVariants",
                     principalColumn: "id");
                 table.ForeignKey(
-                    name: "fk_tag_pack_definition_pack_definition_id",
+                    name: "fk_tags_pack_definitions_pack_definition_id",
                     column: x => x.pack_definition_id,
                     principalSchema: "public",
-                    principalTable: "pack_definition",
+                    principalTable: "PackDefinitions",
                     principalColumn: "id");
             });
 
         migrationBuilder.CreateTable(
-            name: "tag_assignment",
+            name: "TagAssignments",
             schema: "public",
             columns: table => new
             {
@@ -385,127 +385,127 @@ public partial class Inventoria_Start : Migration
             },
             constraints: table =>
             {
-                table.PrimaryKey("pk_tag_assignment", x => new { x.tag_id, x.entity_id, x.entity_type });
+                table.PrimaryKey("pk_tag_assignments", x => new { x.tag_id, x.entity_id, x.entity_type });
                 table.ForeignKey(
-                    name: "fk_tag_assignment_tag_tag_id",
+                    name: "fk_tag_assignments_tags_tag_id",
                     column: x => x.tag_id,
                     principalSchema: "public",
-                    principalTable: "tag",
+                    principalTable: "Tags",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateIndex(
-            name: "ix_category_parent_id",
+            name: "ix_categories_parent_id",
             schema: "public",
-            table: "category",
+            table: "Categories",
             column: "parent_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_category_slug",
+            name: "ix_categories_slug",
             schema: "public",
-            table: "category",
+            table: "Categories",
             column: "slug",
             unique: true);
 
         migrationBuilder.CreateIndex(
-            name: "ix_inventory_category_id",
+            name: "ix_inventories_category_id",
             schema: "public",
-            table: "inventory",
+            table: "Inventories",
             column: "category_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_inventory_parent_inventory_id",
+            name: "ix_inventories_parent_inventory_id",
             schema: "public",
-            table: "inventory",
+            table: "Inventories",
             column: "parent_inventory_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_inventory_item_category_id",
+            name: "ix_inventory_items_category_id",
             schema: "public",
-            table: "inventory_item",
+            table: "InventoryItems",
             column: "category_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_inventory_item_inventory_id",
+            name: "ix_inventory_items_inventory_id",
             schema: "public",
-            table: "inventory_item",
+            table: "InventoryItems",
             column: "inventory_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_inventory_item_item_variant_id",
+            name: "ix_inventory_items_item_variant_id",
             schema: "public",
-            table: "inventory_item",
+            table: "InventoryItems",
             column: "item_variant_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_inventory_item_pack_definition_id",
+            name: "ix_inventory_items_pack_definition_id",
             schema: "public",
-            table: "inventory_item",
+            table: "InventoryItems",
             column: "pack_definition_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_item_definition_category_id",
+            name: "ix_item_definitions_category_id",
             schema: "public",
-            table: "item_definition",
+            table: "ItemDefinitions",
             column: "category_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_item_definition_sku",
+            name: "ix_item_definitions_sku",
             schema: "public",
-            table: "item_definition",
+            table: "ItemDefinitions",
             column: "sku",
             unique: true);
 
         migrationBuilder.CreateIndex(
-            name: "ix_item_variant_barcode",
+            name: "ix_item_variants_barcode",
             schema: "public",
-            table: "item_variant",
+            table: "ItemVariants",
             column: "barcode");
 
         migrationBuilder.CreateIndex(
-            name: "ix_item_variant_category_id",
+            name: "ix_item_variants_category_id",
             schema: "public",
-            table: "item_variant",
+            table: "ItemVariants",
             column: "category_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_item_variant_item_definition_id",
+            name: "ix_item_variants_item_definition_id",
             schema: "public",
-            table: "item_variant",
+            table: "ItemVariants",
             column: "item_definition_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_item_variant_sku",
+            name: "ix_item_variants_sku",
             schema: "public",
-            table: "item_variant",
+            table: "ItemVariants",
             column: "sku",
             unique: true);
 
         migrationBuilder.CreateIndex(
-            name: "ix_pack_definition_barcode",
+            name: "ix_pack_definition_items_item_variant_id",
             schema: "public",
-            table: "pack_definition",
+            table: "PackDefinitionItems",
+            column: "item_variant_id");
+
+        migrationBuilder.CreateIndex(
+            name: "ix_pack_definitions_barcode",
+            schema: "public",
+            table: "PackDefinitions",
             column: "barcode");
 
         migrationBuilder.CreateIndex(
-            name: "ix_pack_definition_category_id",
+            name: "ix_pack_definitions_category_id",
             schema: "public",
-            table: "pack_definition",
+            table: "PackDefinitions",
             column: "category_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_pack_definition_sku",
+            name: "ix_pack_definitions_sku",
             schema: "public",
-            table: "pack_definition",
+            table: "PackDefinitions",
             column: "sku",
             unique: true);
-
-        migrationBuilder.CreateIndex(
-            name: "ix_pack_definition_item_item_variant_id",
-            schema: "public",
-            table: "pack_definition_item",
-            column: "item_variant_id");
 
         migrationBuilder.CreateIndex(
             name: "ix_refresh_tokens_token",
@@ -521,39 +521,39 @@ public partial class Inventoria_Start : Migration
             column: "user_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_tag_inventory_id",
+            name: "ix_tags_inventory_id",
             schema: "public",
-            table: "tag",
+            table: "Tags",
             column: "inventory_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_tag_inventory_item_id",
+            name: "ix_tags_inventory_item_id",
             schema: "public",
-            table: "tag",
+            table: "Tags",
             column: "inventory_item_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_tag_item_definition_id",
+            name: "ix_tags_item_definition_id",
             schema: "public",
-            table: "tag",
+            table: "Tags",
             column: "item_definition_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_tag_item_variant_id",
+            name: "ix_tags_item_variant_id",
             schema: "public",
-            table: "tag",
+            table: "Tags",
             column: "item_variant_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_tag_pack_definition_id",
+            name: "ix_tags_pack_definition_id",
             schema: "public",
-            table: "tag",
+            table: "Tags",
             column: "pack_definition_id");
 
         migrationBuilder.CreateIndex(
-            name: "ix_tag_slug",
+            name: "ix_tags_slug",
             schema: "public",
-            table: "tag",
+            table: "Tags",
             column: "slug",
             unique: true);
 
@@ -575,7 +575,7 @@ public partial class Inventoria_Start : Migration
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(
-            name: "pack_definition_item",
+            name: "PackDefinitionItems",
             schema: "public");
 
         migrationBuilder.DropTable(
@@ -583,7 +583,7 @@ public partial class Inventoria_Start : Migration
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "tag_assignment",
+            name: "TagAssignments",
             schema: "public");
 
         migrationBuilder.DropTable(
@@ -591,7 +591,7 @@ public partial class Inventoria_Start : Migration
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "tag",
+            name: "Tags",
             schema: "public");
 
         migrationBuilder.DropTable(
@@ -599,27 +599,27 @@ public partial class Inventoria_Start : Migration
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "inventory_item",
+            name: "InventoryItems",
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "inventory",
+            name: "Inventories",
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "item_variant",
+            name: "ItemVariants",
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "pack_definition",
+            name: "PackDefinitions",
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "item_definition",
+            name: "ItemDefinitions",
             schema: "public");
 
         migrationBuilder.DropTable(
-            name: "category",
+            name: "Categories",
             schema: "public");
     }
 }
