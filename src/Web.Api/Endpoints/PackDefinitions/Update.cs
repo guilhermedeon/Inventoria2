@@ -42,11 +42,7 @@ internal sealed class Update : IEndpoint
                 request.Sku,
                 request.Barcode,
                 request.CategoryId,
-                request.Items.Select(i => new PackItemDto
-                {
-                    ItemVariantId = i.ItemVariantId,
-                    Quantity = i.Quantity
-                }).ToList()
+                [.. request.Items.Select(i => new PackItemDto(i.ItemVariantId, i.Quantity))]
             );
 
             Result result = await handler.Handle(command, cancellationToken);
