@@ -5,7 +5,6 @@ using Application.Util;
 using Domain.Classifications;
 using Domain.Common.DomainEvents;
 using Domain.Inventories;
-using Domain.Items;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
