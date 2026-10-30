@@ -20,10 +20,10 @@ internal sealed class Create : IEndpoint
     {
         app.MapPost("categories", async (
             Request request,
-            ICommandHandler<CategoryCreateCommand, Guid> handler,
+            ICommandHandler<CreateCategoryCommand, Guid> handler,
             CancellationToken cancellationToken) =>
         {
-            var command = new CategoryCreateCommand(
+            var command = new CreateCategoryCommand(
                 request.UserId,
                 request.Name,
                 request.Slug,
