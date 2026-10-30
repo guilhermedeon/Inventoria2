@@ -50,18 +50,23 @@ internal sealed class CreatePackDefinitionCommandHandler
             }
         }
 
-        if (command.Items is not null)
+        Dictionary<Guid, ItemVariant> variantsById = [];
+        if (command.Items is not null && command.Items.Count > 0)
         {
-            foreach (PackItemDto packItem in command.Items)
-            {
-                bool variantExists = await context.ItemVariants
-                    .AnyAsync(v => v.Id == packItem.ItemVariantId && !v.IsDeleted, cancellationToken);
+            var variantIds = command.Items.Select(i => i.ItemVariantId).Distinct().ToList();
 
-                if (!variantExists)
-                {
-                    return Result.Failure<Guid>(PackDefinitionErrors.ItemVariantNotFound(packItem.ItemVariantId));
-                }
+            List<ItemVariant> variants = await context.ItemVariants
+                .Where(v => variantIds.Contains(v.Id) && !v.IsDeleted)
+                .ToListAsync(cancellationToken);
+
+            if (variants.Count != variantIds.Count)
+            {
+                var foundIds = variants.Select(v => v.Id).ToHashSet();
+                Guid missingVariantId = variantIds.First(id => !foundIds.Contains(id));
+                return Result.Failure<Guid>(PackDefinitionErrors.ItemVariantNotFound(missingVariantId));
             }
+
+            variantsById = variants.ToDictionary(v => v.Id);
         }
 
         PackDefinition pack = new()
@@ -79,15 +84,12 @@ internal sealed class CreatePackDefinitionCommandHandler
         {
             foreach (PackItemDto itemDto in command.Items)
             {
-                ItemVariant variant = await context.ItemVariants
-                    .SingleAsync(v => v.Id == itemDto.ItemVariantId, cancellationToken);
-
                 pack.Items.Add(new PackDefinitionItem
                 {
                     PackDefinitionId = pack.Id,
                     PackDefinition = pack,
                     ItemVariantId = itemDto.ItemVariantId,
-                    ItemVariant = variant,
+                    ItemVariant = variantsById[itemDto.ItemVariantId],
                     Quantity = itemDto.Quantity
                 });
             }
