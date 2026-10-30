@@ -12,6 +12,11 @@ public sealed class CreatePackDefinitionCommandValidator : AbstractValidator<Cre
         RuleFor(x => x.Sku).MaximumLength(100);
         RuleFor(x => x.Barcode).MaximumLength(100);
 
+        RuleFor(x => x.Items)
+            .Must(items => items is null || items.Select(i => i.ItemVariantId).Distinct().Count() == items.Count)
+            .WithMessage("Pack items cannot contain duplicate item variants.")
+            .When(x => x.Items is not null);
+
         RuleForEach(x => x.Items)
             .ChildRules(item =>
             {

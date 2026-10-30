@@ -1,4 +1,4 @@
-﻿namespace SharedKernel;
+namespace SharedKernel;
 
 public record Error
 {
@@ -32,4 +32,10 @@ public record Error
 
     public static Error Conflict(string code, string description) =>
         new(code, description, ErrorType.Conflict);
+
+    public static Error Unauthorized(string code, string description) =>
+        new(code, description, ErrorType.Unauthorized);
+
+    public static Error Forbidden(string code, string description) =>
+        new(code, description, ErrorType.Forbidden);
 }

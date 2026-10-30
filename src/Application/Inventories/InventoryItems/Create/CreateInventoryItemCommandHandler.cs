@@ -28,10 +28,10 @@ internal sealed class CreateInventoryItemCommandHandler
             return Result.Failure<Guid>(validateUserResult.Error);
         }
 
-        bool inventoryExists = await context.Inventory
-            .AnyAsync(i => i.Id == command.InventoryId && !i.IsDeleted, cancellationToken);
+        Inventory? inventory = await context.Inventory
+            .SingleOrDefaultAsync(i => i.Id == command.InventoryId && !i.IsDeleted, cancellationToken);
 
-        if (!inventoryExists)
+        if (inventory is null)
         {
             return Result.Failure<Guid>(InventoryItemErrors.InventoryNotFound(command.InventoryId));
         }
@@ -71,9 +71,6 @@ internal sealed class CreateInventoryItemCommandHandler
                 return Result.Failure<Guid>(CategoryErrors.NotFound(command.CategoryId.Value));
             }
         }
-
-        Inventory inventory = await context.Inventory
-            .SingleAsync(i => i.Id == command.InventoryId, cancellationToken);
 
         InventoryItem item = new()
         {

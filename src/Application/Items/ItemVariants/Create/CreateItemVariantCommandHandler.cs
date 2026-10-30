@@ -28,10 +28,10 @@ internal sealed class CreateItemVariantCommandHandler
             return Result.Failure<Guid>(validateUserResult.Error);
         }
 
-        bool itemDefinitionExists = await context.ItemDefinitions
-            .AnyAsync(i => i.Id == command.ItemDefinitionId && !i.IsDeleted, cancellationToken);
+        ItemDefinition? itemDefinition = await context.ItemDefinitions
+            .SingleOrDefaultAsync(i => i.Id == command.ItemDefinitionId && !i.IsDeleted, cancellationToken);
 
-        if (!itemDefinitionExists)
+        if (itemDefinition is null)
         {
             return Result.Failure<Guid>(ItemVariantErrors.ItemDefinitionNotFound(command.ItemDefinitionId));
         }
@@ -57,9 +57,6 @@ internal sealed class CreateItemVariantCommandHandler
                 return Result.Failure<Guid>(CategoryErrors.NotFound(command.CategoryId.Value));
             }
         }
-
-        ItemDefinition itemDefinition = await context.ItemDefinitions
-            .SingleAsync(i => i.Id == command.ItemDefinitionId, cancellationToken);
 
         ItemVariant variant = new()
         {
